@@ -58,7 +58,7 @@ class ContactForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
-        
+
 
 class PortfolioForm(forms.ModelForm):
     class Meta:
@@ -66,7 +66,7 @@ class PortfolioForm(forms.ModelForm):
         fields = [
             'name', 'email', 'address', 'phone', 'age', 'created_at', 'profile_photo',
             'years_of_experience', 'educational_level', 'specification',
-            'domain', 'region', 'town', 'quarter'
+            'domain', 'region', 'town', 'quarter', 'location'
         ]
 
     # Overriding the save method to automatically set 'created_at' to the current datetime

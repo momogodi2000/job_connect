@@ -89,6 +89,8 @@ class Portfolio(models.Model):
     age = models.IntegerField(default='20')
     created_at = models.DateTimeField(default="2023-01-01 00:00:00", blank=True)  # Default to a specific date
     payment_status = models.CharField(max_length=20, default='not paid')  # New field for payment status
+    location = models.CharField(max_length=255, blank=True)  # New location field
+
 
 
     def __str__(self):
