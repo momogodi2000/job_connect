@@ -1,0 +1,25 @@
+{% extends 'panel/base/base_expert.html' %}
+{% load static %}
+
+
+{% block title %}Payment Receipt{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header text-center">
+            <h3>Payment Receipt</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Service Type:</strong> {{ receipt.service_type|capfirst }} Service</p>
+            <p><strong>Amount Paid:</strong> {{ receipt.price }} XAF</p>
+            <p><strong>User:</strong> {{ receipt.user.username }}</p>
+            <p><strong>Transaction ID:</strong> {{ receipt.transaction_id }}</p>
+            <p><strong>Date:</strong> {{ receipt.created_at|date:"Y-m-d H:i:s" }}</p>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'expert_panel' %}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

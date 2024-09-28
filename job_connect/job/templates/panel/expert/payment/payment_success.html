@@ -1,0 +1,25 @@
+{% extends 'panel/base/base_expert.html' %}
+
+{% block title %}Payment Success{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Payment Details</h5>
+                    <p>Name: {{ payment_info.name }}</p>
+                    <p>Reference: {{ payment_info.reference }}</p>
+                    <p>Status: {{ payment_info.status }}</p>
+                    <p>Amount: {{ payment_info.amount }} {{ payment_info.currency }}</p>
+                    <p>Phone Number: {{ payment_info.phone_number }}</p>
+                    <p>Description: {{ payment_info.description }}</p>
+                    <a href="{% url 'home_page' %}" class="btn btn-primary">Go to Home</a>
+                    <a href="{% url 'download_receipt' payment_info.reference %}" class="btn btn-info">Download Receipt</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

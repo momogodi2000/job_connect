@@ -1,0 +1,202 @@
+{% extends 'panel/base/base_admin.html' %}
+
+{% load static %}
+
+{% block content %}
+<style>
+    /* Basic Reset */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+}
+
+/* Card Container */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Card Styles */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Card Text */
+.card-text {
+    font-size: 0.95em;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 0.9em;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Animation */
+.animated {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.animated.fadeIn {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+<div class="container">
+    <h1 class="mt-4">Admin Panel</h1>
+</div>
+
+<!-- Cards Container -->
+<div class="card-container">
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-users"></i> User Management</h5>
+            <p class="card-text">Manage user information and roles.</p>
+            <p class="card-text">Count: {{ user_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-briefcase"></i> Job Posting Management</h5>
+            <p class="card-text">Manage job postings.</p>
+            <p class="card-text">Count: {{ job_posting_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-user-check"></i> Candidate Profile Management</h5>
+            <p class="card-text">Manage candidate profiles.</p>
+            <p class="card-text">Count: {{ candidate_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-credit-card"></i> Payment Management</h5>
+            <p class="card-text">Manage payment transactions.</p>
+            <p class="card-text">Count: {{ payment_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-gavel"></i> Dispute Resolution</h5>
+            <p class="card-text">Manage dispute cases.</p>
+            <p class="card-text">Count: {{ dispute_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-chart-line"></i> Analytics and Reporting</h5>
+            <p class="card-text">View analytics and reports.</p>
+            <p class="card-text">Count: {{ analytics_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-comments"></i> Communication Management</h5>
+            <p class="card-text">Manage communications.</p>
+            <p class="card-text">Count: {{ communication_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-cogs"></i> Platform Settings</h5>
+            <p class="card-text">Manage platform settings.</p>
+            <p class="card-text">Count: {{ settings_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-shield-alt"></i> Security and Compliance</h5>
+            <p class="card-text">Manage security and compliance issues.</p>
+            <p class="card-text">Count: {{ compliance_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+    <div class="card text-center animated fadeIn">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-lock"></i> Password Resets</h5>
+            <p class="card-text">Manage password reset requests.</p>
+            <p class="card-text">Count: {{ password_reset_count }}</p>
+            <a href="#" class="btn btn-primary">View</a>
+        </div>
+    </div>
+</div>
+    
+
+
+<!-- Copyright Section -->
+<div class="col-md-12 text-center mt-4">
+    <p class="copyright">© 2024 JobConnect. All rights reserved.</p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script src="{% static 'js/admin_panel.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Wait for the DOM to fully load
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.animated');
+
+    // Add fade-in effect to cards
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('fadeIn');
+        }, index * 200); // Staggered animation
+    });
+});
+</script>
+{% endblock %}

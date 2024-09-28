@@ -1,0 +1,127 @@
+{% extends 'panel/base/base_expert.html' %}
+{% load static %}
+
+{% block title %}Connect with Professionals{% endblock %}
+<style>
+    /* Container Styles */
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    /* Header Styles */
+    h2 {
+        font-size: 2rem;
+        color: #333;
+    }
+
+    /* Form Styles */
+    form {
+        margin-top: 20px;
+    }
+
+    /* Button Styles */
+    .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    /* Button Hover Effects */
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+
+    /* Margin for additional buttons */
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+
+    /* Input Field Styles */
+    input[type="text"], input[type="email"], input[type="url"], input[type="file"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, .5);
+    }
+
+    /* Error message styles */
+    .error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+</style>
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/networking.css' %}">
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Job Seeker Networking</h2>
+    <form id="networking-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="form-group">
+            <button type="button" id="geo-btn" class="btn btn-info">Get Location</button>
+            <input type="text" id="id_location" name="location" placeholder="Your location will appear here" readonly>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Start Networking</button>
+        <button type="button" id="research-btn" class="btn btn-primary mt-3">View Job Seekers</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Geolocation - Fetch and display user's location
+document.getElementById('geo-btn').onclick = function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('id_location').value = `Latitude: ${lat}, Longitude: ${lon}`;
+        }, function(error) {
+            console.error("Error fetching geolocation: ", error);
+            alert("Unable to retrieve your location. Please ensure location services are enabled.");
+        });
+    } else {
+        alert("Geolocation is not supported by your browser.");
+    }
+};
+
+// Redirect to job seekers list
+document.getElementById('research-btn').onclick = function() {
+    window.location.href = '{% url "job_seeker_list" %}';
+};
+</script>
+{% endblock %}

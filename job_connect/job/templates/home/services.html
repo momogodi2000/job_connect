@@ -1,0 +1,188 @@
+{% extends 'panel/base/base_home.html' %}
+{% load static %}
+
+{% block content %}
+<section class="services-section py-5 text-center">
+    <div class="container">
+        <h2>Our Services</h2>
+        <p class="lead">Discover a world of opportunities and connect with talented professionals.</p>
+
+        <div class="row mt-4">
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/job_search.jpeg' %}" class="card-img-top" alt="Job Seeker Profiles">
+                    <div class="card-body">
+                        <h5 class="card-title">Job Seeker Profiles</h5>
+                        <p class="card-text">Create comprehensive profiles showcasing your skills, experience, and portfolios. Utilize easy-to-use search filters to find the right talent. All profiles are verified for added trust and credibility.</p>
+                        <a href="#contact" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/client_projects.jpeg' %}" class="card-img-top" alt="Client Projects">
+                    <div class="card-body">
+                        <h5 class="card-title">Client Projects</h5>
+                        <p class="card-text">Post detailed project descriptions and requirements. Receive tailored recommendations based on your needs and manage project timelines and budgets efficiently.</p>
+                        <a href="#contact" class="btn btn-primary">Join Us</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/secure_payments.jpeg' %}" class="card-img-top" alt="Secure Payments">
+                    <div class="card-body">
+                        <h5 class="card-title">Secure Payments</h5>
+                        <p class="card-text">Enjoy safe and reliable payment options for both clients and job seekers. Our transparent invoicing and payment tracking ensure peace of mind, along with a dispute resolution process for any issues.</p>
+                        <a href="#contact" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/direct_messaging.jpeg' %}" class="card-img-top" alt="Direct Messaging">
+                    <div class="card-body">
+                        <h5 class="card-title">Direct Messaging</h5>
+                        <p class="card-text">Private communication between clients and job seekers with file sharing and collaboration tools for efficient project management.</p>
+                        <a href="#contact" class="btn btn-primary">Chat Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/portfolio_showcase.jpeg' %}" class="card-img-top" alt="Portfolio Showcase">
+                    <div class="card-body">
+                        <h5 class="card-title">Portfolio Showcase</h5>
+                        <p class="card-text">Showcase your work with a professional portfolio. Customize it to highlight your unique skills and get feedback and recognition for your work.</p>
+                        <a href="#contact" class="btn btn-primary">Showcase Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 service-card">
+                <div class="card shadow">
+                    <img src="{% static 'image/skill_assessment.jpeg' %}" class="card-img-top" alt="Skill Assessment">
+                    <div class="card-body">
+                        <h5 class="card-title">Skill Assessment</h5>
+                        <p class="card-text">Accurate skill assessments to identify the best candidates. Receive tailored recommendations based on skill level and expertise.</p>
+                        <a href="#contact" class="btn btn-primary">Get Assessed</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Community Features</h3>
+        <p>Engage with a vibrant community through networking opportunities, forums for discussions, advice, and stay updated with industry news.</p>
+
+        <h3 class="mt-5">Benefits of Using JobConnect</h3>
+        <ul class="list-unstyled">
+            <li>✅ Save Time and Effort: Efficiently find and connect with qualified professionals.</li>
+            <li>✅ Access to a Global Talent Pool: Discover talent from around the world.</li>
+            <li>✅ Secure and Reliable Platform: Enjoy a safe and trustworthy environment.</li>
+            <li>✅ Flexible Payment Options: Choose the payment method that works best for you.</li>
+            <li>✅ Strong Community Support: Connect with a network of professionals.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="video-intro-section py-5 bg-white">
+    <div class="container text-center">
+        <h2>Discover How JobConnect Works</h2>
+        <p>Watch this video to learn how you can connect with job opportunities across different sectors and regions.</p>
+        <div class="embed-responsive embed-responsive-16by9 mt-4">
+            <iframe 
+                class="embed-responsive-item" 
+                src="https://www.youtube.com/embed/SUpq7oz1Hxg?autoplay=1&mute=1" 
+                allow="autoplay" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<style>
+.services-section {
+    background-color: #f8f9fa;
+}
+
+.service-card {
+    margin-bottom: 2rem;
+}
+
+.card {
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.video-intro-section {
+    padding: 5rem 0;
+    background-color: #f8f9fa;
+}
+
+.video-intro-section h2 {
+    font-size: 2.5rem;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.video-intro-section p {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.embed-responsive {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    padding-bottom: 56.25%; /* (9 / 16) * 100 */
+}
+
+.embed-responsive-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .video-intro-section h2 {
+        font-size: 2rem;
+    }
+
+    .video-intro-section p {
+        font-size: 1rem;
+    }
+}
+</style>
+
+<script>
+// Optional: Add some simple animations on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceCards = document.querySelectorAll('.service-card');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+
+    serviceCards.forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

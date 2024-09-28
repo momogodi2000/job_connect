@@ -1,0 +1,144 @@
+{% extends 'panel/base/base_expert.html' %}
+{% load static %}
+
+{% block title %}Job Seeker Forum{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Online Job Seekers Section -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Online Job Seekers</h5>
+                </div>
+                <div class="card-body" style="height: 400px; overflow-y: auto;">
+                    <ul id="online-users" class="list-unstyled">
+                        <!-- JS will populate online users -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forum Section -->
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Job Seeker Forum</h5>
+                </div>
+                <div class="card-body" id="forum-body" style="height: 400px; overflow-y: auto;">
+                    <!-- Messages will load here via JS -->
+                </div>
+                <div class="card-footer">
+                    <form id="message-form" class="d-flex align-items-center">
+                        <input type="text" id="message-input" class="form-control me-2" placeholder="Type your message..." required>
+                        <input type="file" id="file-input" class="d-none" accept="image/*,video/*">
+                        <button type="button" class="btn btn-secondary me-2" onclick="document.getElementById('file-input').click();">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #forum-body {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    .message {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 5px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .message img {
+        max-width: 100%;
+        border-radius: 5px;
+    }
+    .message strong {
+        color: #007bff;
+    }
+    .message small {
+        display: block;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    .online-users {
+        padding: 10px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<!-- AOS for animations -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<!-- Forum JS -->
+<script src="{% static 'js/forum.js' %}"></script>
+<script>
+    AOS.init(); // Initialize AOS animations
+
+    document.getElementById('message-form').onsubmit = function(event) {
+        event.preventDefault();
+        
+        const messageInput = document.getElementById('message-input');
+        const fileInput = document.getElementById('file-input');
+        const formData = new FormData();
+        formData.append('message', messageInput.value);
+        if (fileInput.files[0]) {
+            formData.append('file', fileInput.files[0]);
+        }
+
+        fetch('{% url "send_message" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token if necessary
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                messageInput.value = ''; // Clear input
+                loadMessages(); // Reload messages
+            }
+        });
+    }
+
+    function loadMessages() {
+        fetch('{% url "get_messages" %}')
+        .then(response => response.json())
+        .then(data => {
+            const forumBody = document.getElementById('forum-body');
+            forumBody.innerHTML = ''; // Clear existing messages
+            data.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                messageDiv.innerHTML = `
+                    <strong>${msg.user}</strong>: ${msg.message} <br>
+                    ${msg.file ? `<img src="${msg.file}" alt="User uploaded file" />` : ''}
+                    <small>${msg.timestamp}</small>
+                `;
+                forumBody.appendChild(messageDiv);
+            });
+            forumBody.scrollTop = forumBody.scrollHeight; // Auto-scroll
+        });
+    }
+
+    // Initial load of messages
+    loadMessages();
+    setInterval(loadMessages, 10000); // Refresh messages every 10 seconds
+</script>
+{% endblock %}

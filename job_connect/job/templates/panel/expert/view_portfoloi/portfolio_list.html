@@ -1,0 +1,82 @@
+{% extends 'panel/base/base_expert.html' %}
+{% load static %}
+
+{% block title %}Portfolio List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Portfolio List</h1>
+
+    <!-- Filter Form -->
+    <form method="get" class="filter-section row g-3">
+        <div class="col-md-4">
+            <label for="region">Region</label>
+            <select name="region" id="region" class="form-control" onchange="this.form.submit()">
+                <option value="">All Regions</option>
+                {% for region in regions %}
+                    <option value="{{ region.id }}" {% if region.id == selected_region %}selected{% endif %}>{{ region.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="town">Town</label>
+            <select name="town" id="town" class="form-control" onchange="this.form.submit()">
+                <option value="">All Towns</option>
+                {% for town in towns %}
+                    <option value="{{ town.id }}" {% if town.id == selected_town %}selected{% endif %}>{{ town.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="quarter">Quarter</label>
+            <select name="quarter" id="quarter" class="form-control" onchange="this.form.submit()">
+                <option value="">All Quarters</option>
+                {% for quarter in quarters %}
+                    <option value="{{ quarter.id }}" {% if quarter.id == selected_quarter %}selected{% endif %}>{{ quarter.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+    
+
+    <!-- Portfolio List -->
+    <div class="row">
+        {% for portfolio in portfolios %}
+            <div class="col-md-4 my-3">
+                <div class="card portfolio-card shadow-sm">
+                    <img src="{{ portfolio.profile_photo.url }}" class="card-img-top" alt="{{ portfolio.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ portfolio.name }}</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> {{ portfolio.email }}<br>
+                            <strong>Phone:</strong> {{ portfolio.phone }}<br>
+                            <strong>Address:</strong> {{ portfolio.address }}<br>
+                            <strong>Experience:</strong> {{ portfolio.years_of_experience }} years
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .portfolio-card {
+        transition: transform 0.3s ease-in-out;
+    }
+    .portfolio-card:hover {
+        transform: scale(1.05);
+    }
+    .filter-section {
+        margin: 20px 0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Optionally add custom animations or interactivity with JavaScript
+</script>
+{% endblock %}

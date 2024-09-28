@@ -1,0 +1,105 @@
+{% extends 'panel/base/base_admin.html' %}
+{% load static %}
+
+{% block title %}Candidate Profile Management{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Candidate Profiles & Payment Status</h2>
+    
+    <table class="table table-striped table-responsive-md" id="portfolioTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>Profile Photo</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Region</th>
+                <th>Town</th>
+                <th>Quarter</th>
+                <th>Years of Experience</th>
+                <th>Educational Level</th>
+                <th>Domain</th>
+                <th>Specification</th>
+                <th>Age</th>
+                <th>Payment Status</th>
+                <th>Receipt Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for portfolio in portfolios %}
+            <tr>
+                <td><img src="{{ portfolio.profile_photo.url }}" alt="Profile Photo" class="img-thumbnail" width="50" height="50"></td>
+                <td>{{ portfolio.name }}</td>
+                <td>{{ portfolio.email }}</td>
+                <td>{{ portfolio.phone }}</td>
+                <td>{{ portfolio.region.name }}</td>
+                <td>{{ portfolio.town.name }}</td>
+                <td>{{ portfolio.quarter.name }}</td>
+                <td>{{ portfolio.years_of_experience }}</td>
+                <td>{{ portfolio.educational_level.level }}</td>
+                <td>{{ portfolio.domain.name }}</td>
+                <td>{{ portfolio.specification.name }}</td>
+                <td>{{ portfolio.age }}</td>
+                <td>
+                    {% if portfolio.user.receipts.count > 0 %}
+                    <span class="badge badge-success">Paid</span>
+                    {% else %}
+                    <span class="badge badge-danger">Not Paid</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if portfolio.user.receipts.count > 0 %}
+                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#receiptModal{{ portfolio.user.id }}">View Receipt</button>
+                    
+                    <!-- Modal for Receipt Details -->
+                    <div class="modal fade" id="receiptModal{{ portfolio.user.id }}" tabindex="-1" role="dialog" aria-labelledby="receiptModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="receiptModalLabel">Receipt Details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        {% for receipt in portfolio.user.receipts.all %}
+                                        <li><strong>Amount:</strong> {{ receipt.amount }} {{ receipt.currency }}</li>
+                                        <li><strong>Reference:</strong> {{ receipt.reference }}</li>
+                                        <li><strong>Date:</strong> {{ receipt.date }}</li>
+                                        <li><strong>Description:</strong> {{ receipt.description }}</li>
+                                        <li><strong>From Phone:</strong> {{ receipt.from_phone }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <span>No Receipt</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animation and validation
+    $(document).ready(function() {
+        // Animation when the page loads
+        $('table').hide().fadeIn(1000);
+
+        // Add sorting or filtering functionality here
+        // Example: Search or filter the table contents using JavaScript
+    });
+</script>
+{% endblock %}
