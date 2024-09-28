@@ -8,71 +8,65 @@
         background-size: cover;
         color: rgba(255, 255, 255, 0.719);
     }
-    /* contact.css */
-
-body {
-    font-family: 'Arial', sans-serif;
-}
-
-.hero {
-    background: url('../image/images.jpeg') no-repeat center center;
-    background-size: cover;
-    color: rgba(255, 255, 255, 0.719);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.contact-form {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.contact-form:hover {
-    transform: scale(1.02);
-}
-
-.contact-form h2 {
-    margin-bottom: 20px;
-}
-
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .contact-info {
-        margin-top: 20px;
+    
+    body {
+        font-family: 'Arial', sans-serif;
     }
-}
 
+    .hero {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-form {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-form:hover {
+        transform: scale(1.02);
+    }
+
+    .contact-form h2 {
+        margin-bottom: 20px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+        .contact-info {
+            margin-top: 20px;
+        }
+    }
 </style>
 
 <header class="hero text-white text-center py-5 fade-in">
@@ -101,14 +95,27 @@ body {
     </div>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'js/contact.js' %}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Example of custom animation
+        // Access device location and display it in the location field
+        const locationInput = document.querySelector('#id_location');
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                locationInput.value = `${latitude}, ${longitude}`;
+            }, function() {
+                alert('Unable to retrieve your location.');
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+
+        // Add custom animation to form elements
         const formElements = document.querySelectorAll('.contact-form input, .contact-form textarea');
         formElements.forEach(el => {
             el.addEventListener('focus', function() {
@@ -119,28 +126,5 @@ body {
             });
         });
     });
-    // contact.js
-
-document.addEventListener('DOMContentLoaded', function() {
-    const formElements = document.querySelectorAll('.contact-form input, .contact-form textarea');
-
-    formElements.forEach(el => {
-        el.addEventListener('focus', function() {
-            this.classList.add('animate__animated', 'animate__pulse');
-        });
-        el.addEventListener('blur', function() {
-            this.classList.remove('animate__animated', 'animate__pulse');
-        });
-    });
-
-    // Optional: Add a success message after form submission
-    const form = document.querySelector('.contact-form form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('Your message has been sent successfully!'); // Replace with actual form submission handling
-        form.reset(); // Reset form fields after submission
-    });
-});
-
 </script>
 {% endblock %}

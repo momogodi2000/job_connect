@@ -54,11 +54,11 @@ class ForgotPasswordForm(forms.Form):
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['email', 'description', 'service_rate', 'location']
+        fields = ['email', 'description', 'location']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
-
+        
 
 class PortfolioForm(forms.ModelForm):
     class Meta:

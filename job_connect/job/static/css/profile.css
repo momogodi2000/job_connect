@@ -1,0 +1,133 @@
+/* profile.css */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+}
+
+/* Dashboard Container */
+.dashboard {
+    display: flex;
+}
+
+/* Navigation Styles */
+.dashboard-nav {
+    width: 250px;
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+.dashboard-nav header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.dashboard-nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-nav-item {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background 0.3s;
+}
+
+.dashboard-nav-item:hover {
+    background-color: #495057;
+}
+
+/* Main Content Styles */
+.dashboard-app {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+    transition: margin-left 0.3s;
+}
+
+.dashboard-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-left: 15px;
+    cursor: pointer;
+    color: #495057;
+}
+
+/* Search Bar Styles */
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px;
+    margin-right: 5px;
+    width: 200px;
+}
+
+/* Content Styles */
+.dashboard-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .dashboard-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .dashboard-app {
+        margin-left: 0;
+    }
+
+    .dashboard-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+}

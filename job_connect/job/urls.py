@@ -3,7 +3,9 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView  # Import TemplateView
 from .views import profile_overview, create_portfolio
-from .views import payment_page, portfolio_list_view, forum_view, send_message, get_messages, get_online_users, post_communication, portfolio_management
+from .views import payment_page, portfolio_list_view, forum_view, send_message, get_messages, get_online_users, post_communication, portfolio_management, delete_candidate
+from .views import manage_contact, reply_contact, delete_contact
+
 
 
 
@@ -47,7 +49,11 @@ urlpatterns = [
     path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('post-communication/', post_communication, name='post_communication'),
     path('portfolio-management/', portfolio_management, name='portfolio_management'),
+    path('portfolio/delete/<int:candidate_id>/', views.delete_candidate, name='delete_candidate'),
 
+    path('manage_contact/', manage_contact, name='manage_contact'),
+    path('reply_contact/<int:contact_id>/', reply_contact, name='reply_contact'),
+    path('delete_contact/<int:contact_id>/', delete_contact, name='delete_contact'),
 
 
 

@@ -57,8 +57,9 @@ def contact(request):
             return redirect('contact')  # Redirect to the same page after saving
     else:
         form = ContactForm()
-    
+
     return render(request, 'home/contact.html', {'form': form})
+
 
 def about(request):
     return render(request, 'home/about.html')
@@ -512,3 +513,46 @@ def portfolio_management(request):
     portfolios = Portfolio.objects.all()
     receipts = {receipt.user.id: receipt for receipt in Receipt.objects.all()}  # Create a dictionary for faster lookup
     return render(request, 'panel/admin/communication/portfolio_management.html', {'portfolios': portfolios, 'receipts': receipts})
+
+def delete_candidate(request, candidate_id):
+    # Ensure the request method is POST to avoid accidental deletions
+    if request.method == 'POST':
+        candidate = get_object_or_404(Portfolio, id=candidate_id)
+        candidate.delete()
+        return redirect('some_view_name')  # Redirect to a list view or success page
+    
+    # If not a POST request, return a bad request response
+    return HttpResponseBadRequest("Invalid request")
+
+
+
+
+# Yagmail credentials
+username = "yvangodimomo@gmail.com"
+password = "pzlsapphesjecgdl"  # Use your app-specific password
+
+# Create a yagmail object
+yag = yagmail.SMTP(username, password)
+
+def manage_contact(request):
+    contacts = Contact.objects.all()  # Fetch all contact messages
+    return render(request, 'panel/admin/contact/manage_contact.html', {'contacts': contacts})
+
+def reply_contact(request, contact_id):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Send the reply email
+        yag.send(
+            to=email,
+            subject='Reply to Your Contact Message',
+            contents=message
+        )
+
+        return redirect('manage_contact')
+
+def delete_contact(request, contact_id):
+    contact = Contact.objects.get(id=contact_id)
+    contact.delete()
+    return redirect('manage_contact')

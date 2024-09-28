@@ -21,7 +21,6 @@ class CustomUser(AbstractUser):
 class Contact(models.Model):
     email = models.EmailField()
     description = models.TextField()
-    service_rate = models.CharField(max_length=50)  # Numeric rating or choice-based field
     date = models.DateField(auto_now_add=True)  # Automatically set the date to now
     location = models.CharField(max_length=255)
 
