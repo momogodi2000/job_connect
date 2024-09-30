@@ -1,0 +1,32 @@
+/* Style the analytics dashboard */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.table {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #343a40;
+}

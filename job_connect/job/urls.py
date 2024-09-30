@@ -80,6 +80,8 @@ urlpatterns = [
 
     path('job-applications/', job_applications, name='job_applications'),
     path('apply-job/', apply_job, name='apply_job'),  # Adjust this as necessary
+    path('analytics/', views.analytics_view, name='analytics_view'),
+
     
 
 

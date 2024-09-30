@@ -543,6 +543,26 @@ def apply_job(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+from django.db.models import Count, Avg
+
+
+def analytics_view(request):
+    # Example Analytics
+    job_application_performance = JobApplication.objects.values('job_post__title').annotate(total_applications=Count('id'))
+    
+    client_feedback = Review.objects.all()
+    average_rating = Review.objects.aggregate(average_rating=Avg('rating'))['average_rating']
+
+    context = {
+        'job_application_performance': job_application_performance,
+        'client_feedback': client_feedback,
+        'average_rating': average_rating,
+    }
+
+    return render(request, 'panel/expert/analyse/analytics.html', context)
+
+
+
 ##admin panel
 
 
