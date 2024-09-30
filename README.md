@@ -114,3 +114,23 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Feel free to modify any section to better fit your project specifics!
+
+
+
+the login:
+
+admin:
+ name:admin
+ password:admin123
+
+expert / job seeker
+ name:expert
+ password:expert123
+
+
+ clients
+  name:clients
+  password: clients123
+
+you can register new clients and exper(job seeker) in the database
+and then run migration
