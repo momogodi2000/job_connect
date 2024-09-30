@@ -1,0 +1,108 @@
+{% extends 'panel/base/base_admin.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Job Posting Management</h2>
+    <div class="table-responsive">
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Posted By</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="job-post-list">
+                {% for job in job_posts %}
+                <tr id="job-{{ job.id }}">
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.description|truncatewords:20 }}</td>
+                    <td>{{ job.posted_by.username }}</td>
+                    <td>
+                        <span class="badge badge-{{ job.is_active|yesno:'success,danger' }}">
+                            {{ job.is_active|yesno:'Active,Inactive' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-sm approve-btn" data-id="{{ job.id }}">Approve</button>
+                        <button class="btn btn-danger btn-sm reject-btn" data-id="{{ job.id }}">Reject</button>
+                        <button class="btn btn-warning btn-sm delete-btn" data-id="{{ job.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="message-box" class="mt-3"></div>
+</div>
+
+<script>
+    // Approve Job Post
+    document.querySelectorAll('.approve-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            let postId = this.getAttribute('data-id');
+            fetch(`/job-posts/approve/${postId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById(`job-${postId}`).querySelector('.badge').innerHTML = 'Active';
+                    document.getElementById(`job-${postId}`).querySelector('.badge').classList.remove('badge-danger');
+                    document.getElementById(`job-${postId}`).querySelector('.badge').classList.add('badge-success');
+                    document.getElementById('message-box').innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                }
+            });
+        });
+    });
+
+    // Reject Job Post
+    document.querySelectorAll('.reject-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            let postId = this.getAttribute('data-id');
+            fetch(`/job-posts/reject/${postId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById(`job-${postId}`).querySelector('.badge').innerHTML = 'Inactive';
+                    document.getElementById(`job-${postId}`).querySelector('.badge').classList.remove('badge-success');
+                    document.getElementById(`job-${postId}`).querySelector('.badge').classList.add('badge-danger');
+                    document.getElementById('message-box').innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+            });
+        });
+    });
+
+    // Delete Job Post
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            let postId = this.getAttribute('data-id');
+            fetch(`/job-posts/delete/${postId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById(`job-${postId}`).remove();
+                    document.getElementById('message-box').innerHTML = `<div class="alert alert-warning">${data.message}</div>`;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

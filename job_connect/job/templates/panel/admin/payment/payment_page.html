@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Payment Management</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Track Payments</h3>
+                <div class="payment-tracker">
+                    <ul id="payment-status">
+                        <!-- Dynamically updated list of payment statuses -->
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3>Process Refunds</h3>
+                <form id="refund-form" method="POST">
+                    <div class="mb-3">
+                        <label for="refundReference" class="form-label">Reference Number</label>
+                        <input type="text" class="form-control" id="refundReference" name="refundReference" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="refundAmount" class="form-label">Refund Amount</label>
+                        <input type="number" class="form-control" id="refundAmount" name="refundAmount" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Process Refund</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3>Manage Payment Gateways</h3>
+                <button id="addGateway" class="btn btn-primary">Add Payment Gateway</button>
+            </div>
+        </div>
+
+        <!-- Modal for Adding Payment Gateway -->
+        <div class="modal fade" id="gatewayModal" tabindex="-1" aria-labelledby="gatewayModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="gatewayModalLabel">Add Payment Gateway</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="gatewayForm">
+                            <div class="mb-3">
+                                <label for="gatewayName" class="form-label">Gateway Name</label>
+                                <input type="text" class="form-control" id="gatewayName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gatewayAPIKey" class="form-label">API Key</label>
+                                <input type="text" class="form-control" id="gatewayAPIKey" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save Gateway</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/payment.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+    // Track Payment Status via AJAX
+    $.ajax({
+        url: '/api/payments/status/',
+        method: 'GET',
+        success: function (data) {
+            const paymentList = $('#payment-status');
+            data.forEach(function (payment) {
+                paymentList.append(`<li>${payment.status} - ${payment.amount} XAF</li>`);
+            });
+        }
+    });
+
+    // Process Refund
+    $('#refund-form').on('submit', function (e) {
+        e.preventDefault();
+        const refundData = {
+            reference: $('#refundReference').val(),
+            amount: $('#refundAmount').val(),
+        };
+
+        $.ajax({
+            url: '/api/payments/refund/',
+            method: 'POST',
+            data: refundData,
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function () {
+                alert('Refund failed. Please try again.');
+            }
+        });
+    });
+
+    // Show Modal for Adding Payment Gateway
+    $('#addGateway').click(function () {
+        $('#gatewayModal').modal('show');
+    });
+
+    // Add Payment Gateway
+    $('#gatewayForm').on('submit', function (e) {
+        e.preventDefault();
+        const gatewayData = {
+            name: $('#gatewayName').val(),
+            apiKey: $('#gatewayAPIKey').val(),
+        };
+
+        $.ajax({
+            url: '/api/gateways/add/',
+            method: 'POST',
+            data: gatewayData,
+            success: function (response) {
+                alert('Gateway added successfully!');
+                $('#gatewayModal').modal('hide');
+            },
+            error: function () {
+                alert('Error adding gateway.');
+            }
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

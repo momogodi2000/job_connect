@@ -981,3 +981,26 @@ def candidate_details(request, expert_id):
 
     return render(request, 'panel/clients/job/candidate_detail.html', {'expert': expert, 'reviews': reviews})
 
+
+from .models import JobPost
+
+def job_posting_management(request):
+    job_posts = JobPost.objects.all()  # Fetch all job posts
+    return render(request, 'panel/admin/job/job_posting_management.html', {'job_posts': job_posts})
+
+def approve_job_post(request, post_id):
+    job_post = get_object_or_404(JobPost, id=post_id)
+    job_post.is_active = True  # Mark the post as active
+    job_post.save()
+    return JsonResponse({'status': 'success', 'message': f'Job post {job_post.title} approved.'})
+
+def reject_job_post(request, post_id):
+    job_post = get_object_or_404(JobPost, id=post_id)
+    job_post.is_active = False  # Mark the post as inactive
+    job_post.save()
+    return JsonResponse({'status': 'success', 'message': f'Job post {job_post.title} rejected.'})
+
+def delete_job_post(request, post_id):
+    job_post = get_object_or_404(JobPost, id=post_id)
+    job_post.delete()  # Delete the post
+    return JsonResponse({'status': 'success', 'message': f'Job post {job_post.title} deleted.'})

@@ -1,0 +1,22 @@
+/* job_posting_management.css */
+.container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.btn {
+    margin-right: 5px;
+}
+
+#message-box {
+    transition: opacity 0.5s;
+}
+
+.alert {
+    display: none;
+}

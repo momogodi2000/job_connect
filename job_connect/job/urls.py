@@ -5,6 +5,7 @@ from django.views.generic import TemplateView  # Import TemplateView
 from .views import profile_overview, create_portfolio
 from .views import payment_page, portfolio_list_view, forum_view, send_message, get_messages, get_online_users, post_communication, portfolio_management, delete_candidate
 from .views import manage_contact, reply_contact, delete_contact, forgot_password, verify_reset_code, reset_password, profile_view, profile_admin, job_applications, apply_job
+from .views import job_posting_management, approve_job_post, reject_job_post, delete_job_post
 
 
 
@@ -102,10 +103,10 @@ urlpatterns = [
     path('get_quarters/', views.get_quarters, name='get_quarters'),
     path('search_candidates/', views.search_candidates, name='search_candidates'),
     path('candidate/<int:expert_id>/', views.candidate_details, name='candidate_details'),
-
-
-
-
+    path('job-posts/manage/', job_posting_management, name='job_posting_management'),
+    path('job-posts/approve/<int:post_id>/', approve_job_post, name='approve_job_post'),
+    path('job-posts/reject/<int:post_id>/', reject_job_post, name='reject_job_post'),
+    path('job-posts/delete/<int:post_id>/', delete_job_post, name='delete_job_post'),
 
 
 
