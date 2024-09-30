@@ -17,7 +17,6 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=15, default='0000000000')  # Provide a default value
     address = models.TextField(null=True, blank=True)  # Temporarily allow null
 
-
 class Contact(models.Model):
     email = models.EmailField()
     description = models.TextField()
@@ -26,9 +25,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
-
-
-
 
 class Domain(models.Model):
     name = models.CharField(max_length=255)
@@ -42,9 +38,6 @@ class Specification(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
 
 class Region(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -114,8 +107,6 @@ class Receipt(models.Model):
     def __str__(self):
         return f"Receipt {self.id} - {self.user.username} - {self.amount} {self.currency}"
 
-
-
 from django.utils import timezone
 from datetime import timedelta
 
@@ -174,8 +165,6 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.client_name} for {self.expert.username}"
 
-
-
 class Booking(models.Model):
     client = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='client_bookings')
     expert = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='expert_bookings', limit_choices_to={'role': 'expert'})
@@ -186,8 +175,6 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking by {self.client.username} with {self.expert.username}"
-
-        
 
 from django.conf import settings  # Import settings to reference AUTH_USER_MODEL
 
@@ -236,3 +223,9 @@ class Message(models.Model):
         return f"Message from {self.sender} to {self.recipient}"
 
 # You can schedule automatic deletion of old messages using a periodic task (e.g., cron or Django Celery)
+class JobPosting(models.Model):
+    # Your fields here
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    posted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    posted_date = models.DateTimeField(auto_now_add=True)

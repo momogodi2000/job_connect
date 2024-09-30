@@ -172,12 +172,26 @@ def logout(request):
 def expert_panel(request):
     return render(request, 'panel/expert/expert_panel.html')
 
+
+from .models import CustomUser, Portfolio, Communication, Review, Booking, JobPost, JobApplication
+
 @login_required
 def admin_panel(request):
-    return render(request, 'panel/admin/admin_panel.html')
+    context = {
+        'user_count': CustomUser.objects.count(),
+        'candidate_count': Portfolio.objects.count(),
+        'communication_count': Communication.objects.count(),
+        'review_count': Review.objects.count(),
+        'booking_count': Booking.objects.count(),
+        'job_post_count': JobPost.objects.count(),
+        'job_application_count': JobApplication.objects.count(),
+        'settings_count': 10,  # Example for now
+        'compliance_count': 5,  # Example for now
+        'password_reset_count': 3  # Example for now
+    }
+    return render(request, 'panel/admin/admin_panel.html', context)
 
-
-
+    
 @login_required
 def clients_panel(request):
     return render(request, 'panel/clients/clients_panel.html')
@@ -1004,3 +1018,5 @@ def delete_job_post(request, post_id):
     job_post = get_object_or_404(JobPost, id=post_id)
     job_post.delete()  # Delete the post
     return JsonResponse({'status': 'success', 'message': f'Job post {job_post.title} deleted.'})
+
+
