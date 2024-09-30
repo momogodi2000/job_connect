@@ -1,0 +1,30 @@
+{% for candidate in candidates %}
+    <div class="col-md-4">
+        <div class="card candidate-card">
+            <img class="card-img-top" src="{{ candidate.profile_photo.url }}" alt="{{ candidate.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ candidate.name }}</h5>
+                <p class="card-text">{{ candidate.specification.name }} - {{ candidate.years_of_experience }} years experience</p>
+                <p class="card-text">{{ candidate.region.name }}, {{ candidate.town.name }}, {{ candidate.quarter.name }}</p>
+                <a href="#" class="btn btn-primary">View Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="candidate-results" class="row">
+        {% for candidate in candidates %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ candidate.profile_picture.url }}" class="card-img-top" alt="Profile Picture">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ candidate.username }}</h5>
+                        <p class="card-text">{{ candidate.expertise }}</p>
+                        <a href="{% url 'candidate_details' candidate.id %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endfor %}
+

@@ -1,0 +1,79 @@
+{% extends 'panel/base/base_clients.html' %}
+
+{% block content %}
+<style>
+    @media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+    
+    .reviews {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+}
+
+</style>
+<div class="container">
+    <h2>{{ expert.username }}'s Profile</h2>
+    <p><strong>Email:</strong> {{ expert.email }}</p>
+    <p><strong>Phone:</strong> {{ expert.phone }}</p>
+    <p><strong>Expertise:</strong> {{ expert.expertise }}</p>
+    
+    <!-- Reviews Section -->
+    <h3>Reviews</h3>
+    <div class="reviews">
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review">
+                    <strong>{{ review.client_name }}:</strong>
+                    <p>{{ review.comment }}</p>
+                    <p>Rating: {{ review.rating }} / 5</p>
+                    <p><small>{{ review.created_at }}</small></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Booking Form -->
+    <h3>Book {{ expert.username }}</h3>
+    <form method="post" id="booking-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="date">Select Date</label>
+            <input type="datetime-local" id="date" name="date" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="service_description">Describe the Service</label>
+            <textarea id="service_description" name="service_description" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Book Service</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#booking-form').submit(function(event) {
+            event.preventDefault();
+            
+            $.ajax({
+                url: window.location.href,
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    alert(response.message);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/job.css' %}">
+
+<div class="dashboard">
+    <div class="dashboard-nav">
+        <header>
+            <a href="{% url 'expert_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s profile picture" class="profile-pic" />
+                {% else %}
+                    <img src="{% static 'image/why.jpeg' %}" alt="Default Avatar" class="profile-pic" />
+                {% endif %}
+                <span>{{ user.username }}'s Panel</span>
+            </a>
+        </header>
+        <nav class="dashboard-nav-list">
+            <a href="{% url 'expert_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{% url 'profile_overview' %}" class="dashboard-nav-item"><i class="fas fa-user-circle"></i> Profile Overview</a>
+            <a href="{% url 'create_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Portfolio Management</a>
+            <a href="{% url 'portfolio_list' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> View Portfolio</a>
+            <a href="{% url 'community_page' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Community</a>
+            <a href="{% url 'job_applications' %}" class="dashboard-nav-item"><i class="fas fa-clipboard-list"></i> Job Applications</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Analytics</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-inbox"></i> Messages</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-history"></i> History</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> UnLock New features</a>
+            <a href="{% url 'security_settings' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+            <a href="{% url 'logout' %}" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </div>
+    <main class="dashboard-app">
+        <header class="dashboard-toolbar">
+            <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+            <div class="header-icons">
+                <i class="fas fa-globe icon" title="Change Language" onclick="toggleLanguage()"></i>
+                <i class="fas fa-paint-brush icon" title="Change Theme" onclick="toggleTheme()"></i>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." aria-label="Search" />
+                    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </header>
+<div class="container mt-5">
+    <h1 class="text-center">Job Applications</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Saved Jobs</h2>
+            <div id="saved-jobs" class="list-group">
+                {% for job in saved_jobs %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ job.title }}</h5>
+                    <p class="mb-1">{{ job.description }}</p>
+                    <small>Posted on: {{ job.created_at }}</small>
+                </a>
+                {% empty %}
+                <p>No saved jobs.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Applied Jobs</h2>
+            <div id="applied-jobs" class="list-group">
+                {% for application in applications %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ application.job_post.title }}</h5>
+                    <p class="mb-1">Status: {{ application.job_post.status }}</p>
+                    <small>Applied on: {{ application.applied_at }}</small>
+                </a>
+                {% empty %}
+                <p>No job applications.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Job Posts</h2>
+            <div id="job-posts" class="list-group">
+                {% for job in job_posts %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ job.title }}</h5>
+                    <p class="mb-1">{{ job.description }}</p>
+                    <small>Posted by: {{ job.posted_by.username }}</small>
+                    <button class="btn btn-primary mt-2 apply-job" data-job-id="{{ job.id }}" data-toggle="modal" data-target="#applyModal">Apply</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Applying -->
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="applyModalLabel">Apply for Job</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="apply-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="job_post_id" id="job_post_id" value="">
+                        <div class="form-group">
+                            <label for="candidate_name">Name</label>
+                            <input type="text" class="form-control" id="candidate_name" name="candidate_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="candidate_email">Email</label>
+                            <input type="email" class="form-control" id="candidate_email" name="candidate_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="resume">Upload Resume</label>
+                            <input type="file" class="form-control" id="resume" name="resume" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cover_letter">Cover Letter</label>
+                            <textarea class="form-control" id="cover_letter" name="cover_letter" rows="3" required></textarea>
+                        </div>
+                        <input type="hidden" name="applied_at" id="applied_at" value="{{ now|date:'Y-m-d H:i:s' }}">
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Open modal and set job ID
+    $('.apply-job').click(function() {
+        var jobId = $(this).data('job-id');
+        $('#job_post_id').val(jobId);
+        
+        // Set the candidate's name and email to logged-in user info
+        $('#candidate_name').val('{{ request.user.username }}');
+        $('#candidate_email').val('{{ request.user.email }}');
+    });
+
+    // Handle apply form submission
+    $('#apply-form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: '{% url "apply_job" %}',  // Adjust the URL based on your route
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#applyModal').modal('hide');
+                alert('Application submitted successfully!');
+                location.reload();  // Reload page to see new application
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    .list-group-item {
+        transition: transform 0.2s;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}

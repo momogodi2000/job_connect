@@ -48,7 +48,7 @@ class CustomUserCreationForm(UserCreationForm):
 
         
 class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(label='Email Address', max_length=254)
 
 
 class ContactForm(forms.ModelForm):
@@ -110,3 +110,26 @@ class NetworkingForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'facebook': forms.URLInput(attrs={'class': 'form-control'}),
         }
+
+
+from .models import Review
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.RadioSelect(choices=[(i, i) for i in range(1, 6)]),  # Rating as radio buttons
+        }
+
+from .models import JobPost, JobApplication
+
+class JobPostForm(forms.ModelForm):
+    class Meta:
+        model = JobPost
+        fields = ['title', 'description', 'requirements', 'qualifications']
+
+class JobApplicationForm(forms.ModelForm):
+    class Meta:
+        model = JobApplication
+        fields = ['candidate_name', 'candidate_email', 'resume', 'cover_letter']

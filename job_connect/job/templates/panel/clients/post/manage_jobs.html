@@ -1,0 +1,43 @@
+{% extends 'panel/base/base_clients.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+
+<div class="container mt-5">
+    <h2>Manage Job Postings</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Posted On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in job_posts %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>{% if job.is_active %} Active {% else %} Paused {% endif %}</td>
+                <td>{{ job.created_at|date:"F j, Y" }}</td>
+                <td>
+                    <a href="{% url 'track_applications' job.id %}" class="btn btn-primary">View Applications</a>
+                    <a href="{% url 'edit_job_post' job.id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'toggle_job_status' job.id %}" class="btn btn-danger">{% if job.is_active %} Pause {% else %} Activate {% endif %}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation when page loads
+        document.querySelectorAll('.card').forEach(card => {
+            card.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    });
+</script>
+
+{% endblock %}

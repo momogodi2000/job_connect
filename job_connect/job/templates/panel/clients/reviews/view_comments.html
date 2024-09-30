@@ -1,0 +1,36 @@
+{% extends 'panel/base/base_clients.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/view_comment.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+
+<div class="container mt-5">
+    <h2>Comments for {{ expert.username }}</h2>
+    <p>Email: {{ expert.email }}</p>
+
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.client_name }}</h5>
+                    <p class="card-text">
+                        <strong>Email:</strong> {{ review.client_email }}<br>
+                        <strong>Rating:</strong> {{ review.rating }}/5<br>
+                        <strong>Comment:</strong> {{ review.comment }}
+                    </p>
+                    <p class="card-text"><small class="text-muted">Posted on {{ review.created_at|date:"F j, Y, g:i a" }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No reviews available for this expert.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

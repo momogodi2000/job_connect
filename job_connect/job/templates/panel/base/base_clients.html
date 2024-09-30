@@ -58,16 +58,22 @@
                 </a>
             </header>
             <nav class="dashboard-nav-list">
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Job Posting</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-search"></i> Candidate Search</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-comments"></i> Messaging</a>
+                <a href="{% url 'clients_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'profile_view' %}" class="dashboard-nav-item"><i class="fas fa-user-circle"></i> Profile Overview</a>
+                <a href="{% url 'create_job_post' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Job Posting</a>
+                
+                <a href="{% url 'candidate_search' %}" class="dashboard-nav-item"><i class="fas fa-search"></i> Candidate Search</a>
+                
+
+
+                <a href="{% url 'messaging_page' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Messaging</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Project Management</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-credit-card"></i> Payments</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-star"></i> Reviews and Ratings</a>
+                <a href="{% url 'expert_list' %}" class="dashboard-nav-item"><i class="fas fa-star"></i> Reviews and Ratings</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-users"></i> Community Features</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'communication_list' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Communication</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
                 <a href="{% url 'logout' %}" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </nav>
         </div>
@@ -94,5 +100,19 @@
 
     <!-- Custom JavaScript -->
     <script src="{% static 'js/momo2.js' %}"></script>
+    <script>
+        // Ensure the form is responsive on mobile
+        window.addEventListener('resize', function() {
+            const formContainer = document.querySelector('.form-container');
+            if (window.innerWidth < 768) {
+                formContainer.style.padding = '15px';  // Decrease padding on smaller screens
+            } else {
+                formContainer.style.padding = '20px';  // Default padding
+            }
+        });
+
+        // Trigger resize event on page load
+        window.dispatchEvent(new Event('resize'));
+    </script>
 </body>
 </html>

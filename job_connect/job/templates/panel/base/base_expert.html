@@ -62,7 +62,7 @@
                 <a href="{% url 'create_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Portfolio Management</a>
                 <a href="{% url 'portfolio_list' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> View Portfolio</a>
                 <a href="{% url 'community_page' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Community</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-clipboard-list"></i> Job Applications</a>
+                <a href="{% url 'job_applications' %}" class="dashboard-nav-item"><i class="fas fa-clipboard-list"></i> Job Applications</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Analytics</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-inbox"></i> Messages</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
@@ -95,5 +95,19 @@
 
     <!-- Custom JavaScript -->
     <script src="{% static 'js/momo.js' %}"></script>
+    <script>
+        // Ensure the form is responsive on mobile
+        window.addEventListener('resize', function() {
+            const formContainer = document.querySelector('.form-container');
+            if (window.innerWidth < 768) {
+                formContainer.style.padding = '15px';  // Decrease padding on smaller screens
+            } else {
+                formContainer.style.padding = '20px';  // Default padding
+            }
+        });
+
+        // Trigger resize event on page load
+        window.dispatchEvent(new Event('resize'));
+    </script>
 </body>
 </html>

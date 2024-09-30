@@ -161,3 +161,78 @@ class Communication(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Review(models.Model):
+    expert = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='expert_reviews', limit_choices_to={'role': 'expert'})
+    client_name = models.CharField(max_length=255)
+    client_email = models.EmailField()
+    comment = models.TextField()
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])  # Rating from 1 to 5
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"Review by {self.client_name} for {self.expert.username}"
+
+
+
+class Booking(models.Model):
+    client = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='client_bookings')
+    expert = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='expert_bookings', limit_choices_to={'role': 'expert'})
+    date = models.DateTimeField()
+    service_description = models.TextField()
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('completed', 'Completed')], default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Booking by {self.client.username} with {self.expert.username}"
+
+        
+
+from django.conf import settings  # Import settings to reference AUTH_USER_MODEL
+
+class JobPost(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    requirements = models.TextField()
+    qualifications = models.TextField()
+    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use AUTH_USER_MODEL
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+class JobApplication(models.Model):
+    job_post = models.ForeignKey(JobPost, on_delete=models.CASCADE, related_name='applications')
+    candidate_name = models.CharField(max_length=255)
+    candidate_email = models.EmailField()
+    resume = models.FileField(upload_to='resumes/')
+    cover_letter = models.TextField()
+    applied_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.candidate_name} applied for {self.job_post.title}"
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_messages')
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_messages')
+    subject = models.CharField(max_length=255, null=True, blank=True)
+    body = models.TextField()
+    file = models.FileField(upload_to='message_files/', null=True, blank=True)  # Allow file sharing
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    # To auto-delete records older than 1 month
+    def is_old(self):
+        return self.created_at <= timezone.now() - timedelta(days=30)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Message from {self.sender} to {self.recipient}"
+
+# You can schedule automatic deletion of old messages using a periodic task (e.g., cron or Django Celery)

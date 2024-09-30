@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Candidate Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/find2.css' %}">
+   
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'clients_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s profile picture" class="profile-pic" />
+                    {% else %}
+                        <img src="{% static 'image/why.jpeg' %}" alt="Default Avatar" class="profile-pic" />
+                    {% endif %}
+                    <span>{{ user.username }}'s Panel</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'clients_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'profile_view' %}" class="dashboard-nav-item"><i class="fas fa-user-circle"></i> Profile Overview</a>
+                <a href="{% url 'create_job_post' %}" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Job Posting</a>
+                
+                <a href="{% url 'candidate_search' %}" class="dashboard-nav-item"><i class="fas fa-search"></i> Candidate Search</a>
+                
+
+
+                <a href="{% url 'messaging_page' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Messaging</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Project Management</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-credit-card"></i> Payments</a>
+                <a href="{% url 'expert_list' %}" class="dashboard-nav-item"><i class="fas fa-star"></i> Reviews and Ratings</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-users"></i> Community Features</a>
+                <a href="{% url 'communication_list' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Communication</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'logout' %}" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </div>
+        <main class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+                <div class="header-icons">
+                    <i class="fas fa-globe icon" title="Change Language" onclick="toggleLanguage()"></i>
+                    <i class="fas fa-paint-brush icon" title="Change Theme" onclick="toggleTheme()"></i>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search..." aria-label="Search" />
+                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>]
+
+    <div class="container">
+        <!-- Search Filter Section -->
+        <div class="filter-section">
+            <h3>Advanced Search Filters</h3>
+            <form id="search-form">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <label for="education_level">Education Level</label>
+                        <select id="education_level" class="form-control">
+                            <option value="">Select Education Level</option>
+                            {% for level in education_levels %}
+                                <option value="{{ level.id }}">{{ level.level }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="domain">Domain</label>
+                        <select id="domain" class="form-control">
+                            <option value="">Select Domain</option>
+                            {% for domain in domains %}
+                                <option value="{{ domain.id }}">{{ domain.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="specification">Specification</label>
+                        <select id="specification" class="form-control">
+                            <option value="">Select Specification</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <label for="region">Region</label>
+                        <select id="region" class="form-control">
+                            <option value="">Select Region</option>
+                            {% for region in regions %}
+                                <option value="{{ region.id }}">{{ region.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="town">Town</label>
+                        <select id="town" class="form-control">
+                            <option value="">Select Town</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="quarter">Quarter</label>
+                        <select id="quarter" class="form-control">
+                            <option value="">Select Quarter</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary mt-3" id="search-btn">Search</button>
+            </form>
+        </div>
+
+        <!-- Candidate Results Section -->
+        <div class="candidate-section">
+            <h3>Candidate Profiles</h3>
+            <div id="candidate-results" class="row">
+                <!-- Candidate profiles will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Google Map Section -->
+        <div id="map" class="map-container"></div>
+    </div>
+
+    <!-- Bootstrap & JS Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap"></script>
+
+    <!-- AJAX, Google Maps & JS Code -->
+    <script>
+        $(document).ready(function () {
+            // Fetch specifications based on domain selection
+            $('#domain').change(function () {
+                let domainId = $(this).val();
+                $.ajax({
+                    url: '{% url "get_specifications" %}',
+                    data: {
+                        'domain_id': domainId
+                    },
+                    success: function (data) {
+                        $('#specification').html(data);
+                    }
+                });
+            });
+
+            // Fetch towns based on region selection
+            $('#region').change(function () {
+                let regionId = $(this).val();
+                $.ajax({
+                    url: '{% url "get_towns" %}',
+                    data: {
+                        'region_id': regionId
+                    },
+                    success: function (data) {
+                        $('#town').html(data);
+                    }
+                });
+            });
+
+            // Fetch quarters based on town selection
+            $('#town').change(function () {
+                let townId = $(this).val();
+                $.ajax({
+                    url: '{% url "get_quarters" %}',
+                    data: {
+                        'town_id': townId
+                    },
+                    success: function (data) {
+                        $('#quarter').html(data);
+                    }
+                });
+            });
+
+            // Fetch candidates based on filters
+            $('#search-btn').click(function () {
+                let formData = {
+                    'education_level': $('#education_level').val(),
+                    'domain': $('#domain').val(),
+                    'specification': $('#specification').val(),
+                    'region': $('#region').val(),
+                    'town': $('#town').val(),
+                    'quarter': $('#quarter').val()
+                };
+                $.ajax({
+                    url: '{% url "search_candidates" %}',
+                    data: formData,
+                    success: function (data) {
+                        $('#candidate-results').html(data);
+                    }
+                });
+            });
+        });
+
+        // Initialize Google Map
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 8,
+                center: { lat: -34.397, lng: 150.644 }
+            });
+        }
+    </script>
+</body>
+</html>

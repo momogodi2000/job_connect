@@ -1,0 +1,22 @@
+.card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.was-validated .form-control:invalid {
+    border-color: red;
+    box-shadow: none;
+}
+
+.was-validated .form-control:valid {
+    border-color: green;
+    box-shadow: none;
+}

@@ -1,0 +1,25 @@
+#message-area {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+#messages-container {
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+#message-input {
+    border-radius: 5px;
+}
+
+.input-group-append .btn-success {
+    border-radius: 5px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header, .modal-footer {
+    background-color: #f7f7f7;
+}

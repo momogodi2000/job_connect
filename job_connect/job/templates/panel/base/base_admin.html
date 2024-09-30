@@ -74,6 +74,7 @@
             </header>
             <nav class="dashboard-nav-list">
                 <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'profile_admin' %}" class="dashboard-nav-item"><i class="fas fa-user-circle"></i> Profile Overview</a>
                 <a href="{% url 'user_management' %}" class="dashboard-nav-item"><i class="fas fa-users"></i> User Management</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-briefcase"></i> Job Posting Management</a>
                 <a href="{% url 'portfolio_management' %}" class="dashboard-nav-item"><i class="fas fa-user-check"></i> Candidate Profile Management</a>
@@ -81,7 +82,7 @@
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-gavel"></i> Dispute Resolution</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Analytics and Reporting</a>
                 <a href="{% url 'post_communication' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Communication Management</a>
-                <a href="{% url 'security_settings' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Platform Settings</a>
+                <a href="{% url 'security' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Platform Settings</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-shield-alt"></i> Security and Compliance</a>
                 <a href="{% url 'manage_contact' %}" class="dashboard-nav-item"><i class="fas fa-headset"></i> Customer Support</a>
                 <a href="{% url 'logout' %}" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -110,6 +111,20 @@
 
     <!-- Custom JavaScript -->
     <script src="{% static 'js/momo2.js' %}"></script>
+    <script>
+        // Ensure the form is responsive on mobile
+        window.addEventListener('resize', function() {
+            const formContainer = document.querySelector('.form-container');
+            if (window.innerWidth < 768) {
+                formContainer.style.padding = '15px';  // Decrease padding on smaller screens
+            } else {
+                formContainer.style.padding = '20px';  // Default padding
+            }
+        });
+
+        // Trigger resize event on page load
+        window.dispatchEvent(new Event('resize'));
+    </script>
 </body>
 
 </html>

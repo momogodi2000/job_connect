@@ -1,0 +1,72 @@
+{% extends 'panel/base/base_clients.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Job Post: {{ job_post.title }}</h2>
+
+    <form method="POST" class="animate__animated animate__fadeInUp">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Job Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ form.title.value }}" required>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="description">Job Description</label>
+            <textarea class="form-control" id="description" name="description" rows="5" required>{{ form.description.value }}</textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="requirements">Requirements</label>
+            <textarea class="form-control" id="requirements" name="requirements" rows="3" required>{{ form.requirements.value }}</textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="qualifications">Qualifications</label>
+            <textarea class="form-control" id="qualifications" name="qualifications" rows="3" required>{{ form.qualifications.value }}</textarea>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Update Job Post</button>
+            <a href="{% url 'manage_jobs' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+<style>
+    /* Custom styling for form */
+    form {
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
